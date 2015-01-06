@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://spring_ws.trg/employee" elementFormDefault="qualified"
+    targetNamespace="http://spring_ws.trg/employee">
+    <xsd:element name="EmployeeDetailsRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="tns:empId" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="EmployeeDetailsResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="name" type="xsd:string" />
+                <xsd:element name="email" type="xsd:string" />
+                <xsd:element name="serviceLine" type="xsd:string"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="EmployeeSkillsetRequest">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="tns:empId" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="EmployeeSkillsetResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="language" type="xsd:string" />
+                <xsd:element name="framework" type="xsd:string" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="empId">
+        <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+                <xsd:pattern value="[a-z]{2}[0-9]{5}" />
+            </xsd:restriction>
+        </xsd:simpleType>
+    </xsd:element>
+</xsd:schema>

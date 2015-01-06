@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd">
+
+	<!-- For Hand-Written contract(.wsdl) -->
+	<bean id="EmployeeService"
+		class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<constructor-arg value="/wsdl/EmployeeService.wsdl" />
+	</bean>
+
+	<!--  
+	<bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<property name="contextPath" value="com.employee.schema"/> 
+	</bean>
+	-->
+
+	<oxm:jaxb2-marshaller id="marshaller" contextPath="com.employee.schema" />
+	<oxm:jaxb2-marshaller id="unmarshaller" contextPath="com.employee.schema" />
+
+	<bean id="objectFactory" class="com.employee.schema.ObjectFactory"/>
+
+	<!-- Endpoint Mapping... -->
+	<bean name="service" class="com.employee.service.impl.EmployeeServiceImpl" />
+	<bean id="employeeDetailsEndpoint" class="com.employee.endpoint.EmployeeDetailsEndpoint">
+		<constructor-arg ref="objectFactory"/>
+		<constructor-arg ref="marshaller"/>
+		<constructor-arg ref="service" />
+	</bean>
+	<bean id="employeeSkillsetEndpoint" class="com.employee.endpoint.EmployeeSkillsetEndpoint">
+		<constructor-arg ref="objectFactory"/>
+		<constructor-arg ref="marshaller"/>
+		<constructor-arg ref="service" />
+	</bean>
+	<bean name="endPointMapping"
+		class="org.springframework.ws.server.endpoint.mapping.PayloadRootQNameEndpointMapping">
+		<property name="mappings">
+			<props>
+				<prop key="{http://spring_ws.trg/employee}EmployeeDetailsRequest">employeeDetailsEndpoint</prop>
+				<prop key="{http://spring_ws.trg/employee}EmployeeSkillsetRequest">employeeSkillsetEndpoint</prop>
+			</props>
+		</property>
+	</bean>
+</beans>
